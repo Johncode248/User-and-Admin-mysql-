@@ -11,7 +11,7 @@ import (
 
 const (
 	driverName1     = "mysql"
-	dataSourceName1 = "root:AngelinaNava$1@tcp(localhost:3306)/database_bigproject"
+	dataSourceName1 = "root:password@tcp(localhost:3306)/database_bigproject"
 )
 
 func main() {
