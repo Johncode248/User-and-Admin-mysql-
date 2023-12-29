@@ -71,13 +71,15 @@ func deleteUser_admin(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUsers_admin(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println("OOKK 1")
 	if verfied, claims := VerifyTokenHandler(w, r); verfied == true && claims["username"].(string) == "Admin" {
-		w.Header().Set("Content-Type", "application/json")
+		fmt.Println("OOKK 2")
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("OOKK 3")
 
 	var users []User
 	db, err := OpenDatabaseConnection()
@@ -107,27 +109,27 @@ func getUsers_admin(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var u []byte
-	var u2 []byte
+	var u string
+	var u2 string // to trzeba sprawdic !!!
 	var user User
 	for rows.Next() {
 
-		//Below is a bug
-		if err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err != nil {
+		//Below is a bug       CHECK THESE &u !!!!!!!!!!!!!
+		if err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
 
-			timeString := string(u)
-			timeString2 := string(u2)
+			//timeString := string(u)
+			//timeString2 := string(u2)
 
 			// Parse string to time.Time
 
-			user.Date_birth, err = time.Parse("2006-01-02 15:04:05.9999999", timeString2)
+			user.Date_birth, err = time.Parse("2006-01-02", u2)
 			if err != nil {
 				fmt.Println("Error parsing Date_birth:", err)
 			} else {
 				fmt.Println("good")
 			}
 
-			user.Updated_at, err = time.Parse("2006-01-02 15:04:05.9999999", timeString)
+			user.Updated_at, err = time.Parse("2006-01-02 15:04:05.9999999", u)
 			if err != nil {
 				fmt.Println("Error parsing Updated_at:", err)
 			} else {
