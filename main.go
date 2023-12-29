@@ -9,23 +9,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	driverName1     = "mysql"
-	dataSourceName1 = "root:password@tcp(localhost:3306)/database_bigproject"
-)
-
 func main() {
 
 	err := createTableIfNotExists()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//db, err := sql.Open(driverName, dataSourceName)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//defer db.Close()
 
 	r := mux.NewRouter()
 
