@@ -56,7 +56,7 @@ func deleteUser_admin(w http.ResponseWriter, r *http.Request) {
 	//email := params["email"] // id = user's mail
 
 	if verfied, claims := VerifyTokenHandler(w, r); verfied == true && claims["username"].(string) == "Admin" {
-		del, err := db.Exec("DELETE FROM `database_bigproject`.`project_table` WHERE (`email` = ?)", productId)
+		del, err := db.Exec("DELETE FROM `bigproject`.`project_table` WHERE (`email` = ?)", productId)
 		if err != nil {
 			panic(err)
 		}
@@ -72,14 +72,12 @@ func deleteUser_admin(w http.ResponseWriter, r *http.Request) {
 
 func getUsers_admin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Println("OOKK 1")
 	if verfied, claims := VerifyTokenHandler(w, r); verfied == true && claims["username"].(string) == "Admin" {
-		fmt.Println("OOKK 2")
+		fmt.Println("Token accepted")
 	} else {
 		http.Error(w, "Invalid token", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("OOKK 3")
 
 	var users []User
 	db, err := OpenDatabaseConnection()
@@ -98,7 +96,7 @@ func getUsers_admin(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// Construct the SQL query with LIMIT and OFFSET
-	query := fmt.Sprintf("SELECT name, surname, date_birth, email, password, updated_at FROM database_bigproject.project_table LIMIT %d OFFSET %d", pageSize, (page-1)*pageSize)
+	query := fmt.Sprintf("SELECT name, surname, date_birth, email, password, updated_at FROM bigproject.project_table LIMIT %d OFFSET %d", pageSize, (page-1)*pageSize)
 
 	// Execute the query
 	rows, err := db.Query(query)
