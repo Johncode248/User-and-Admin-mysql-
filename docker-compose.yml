@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  golang:
+    container_name: app_project
+    build:
+      context: .
+    ports:  
+      - "7943:7943"
+    networks:
+      - net_db  
+    depends_on:
+      - db  
+    
+     
+
+  db:
+    container_name: db-project
+    image: mariadb:latest
+    ports:
+      - "3309:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass1
+      - MYSQL_DATABASE=bigproject
+      - MYSQL_USER=asek1
+      - MYSQL_PASSWORD=pass12
+
+
+    networks:
+      - net_db
+
+
+networks:
+  net_db:
+    driver: bridge
+ 
+      
+     
+      
+      
+    
+     
