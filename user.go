@@ -45,7 +45,7 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 	//
 	var ins *sql.Stmt
 
-	ins, err = db.Prepare("INSERT INTO `database_bigproject`.`project_table` (`name`,`surname`, `date_birth`,`email`,`password`,`updated_at`) VALUES(?, ?, ?, ?, ?, ?);")
+	ins, err = db.Prepare("INSERT INTO `bigproject`.`project_table` (`name`,`surname`, `date_birth`,`email`,`password`,`updated_at`) VALUES(?, ?, ?, ?, ?, ?);")
 	if err != nil {
 		panic(err)
 	}
@@ -56,7 +56,6 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 	rowsAffec, _ := res.RowsAffected()
 	if err != nil || rowsAffec != 1 {
 		fmt.Println("Error inserting row:", err)
-
 		return
 	}
 
@@ -86,22 +85,13 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 	var i string
 	var u []uint8
 
-	row := db.QueryRow("SELECT * FROM database_bigproject.project_table WHERE name = ?;", user_decode.Name)
+	row := db.QueryRow("SELECT * FROM bigproject.project_table WHERE name = ?;", user_decode.Name)
 	err = row.Scan(&i, &user.Name, &user.Surname, &p, &user.Email, &user.Password, &u)
 	if err != nil {
 		http.Error(w, "Incorrect password or name"+err.Error(), http.StatusBadRequest)
 		return
 
 	}
-	//user_decode.Password, _ = hashPassword(user_decode.Password)
-
-	/*if user_decode.Name == user.Name && user_decode.Password == user.Password {
-		//json.NewEncoder(w).Encode(r.Body)
-		CreateTokenHandler_user(w, r, user_decode)
-	} else {
-		http.Error(w, "Decoding error, data mismatch", http.StatusBadRequest)
-		return
-	}*/
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(user_decode.Password)); err != nil {
 		http.Error(w, "Incorrect password or name", http.StatusBadRequest)
@@ -125,7 +115,7 @@ func getInfoUser(w http.ResponseWriter, r *http.Request) {
 	var i string
 	var u []uint8
 	if verfied, claims := VerifyTokenHandler(w, r); verfied == true {
-		row := db.QueryRow("SELECT * FROM database_bigproject.project_table WHERE name = ?;", claims["username"])
+		row := db.QueryRow("SELECT * FROM bigproject.project_table WHERE name = ?;", claims["username"])
 
 		if err := row.Scan(&i, &user.Name, &user.Surname, &p, &user.Email, &user.Password, &u); err != nil {
 			log.Println(err)
@@ -177,7 +167,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 	var spc_uuu []byte
 	if verfied, claims := VerifyTokenHandler(w, r); verfied == true {
 		// checking last update, edit data possible once every 24 hours
-		row := db.QueryRow("SELECT updated_at FROM database_bigproject.project_table WHERE name = ?;", claims["username"])
+		row := db.QueryRow("SELECT updated_at FROM bigproject.project_table WHERE name = ?;", claims["username"])
 		row.Scan(&spc_uuu)
 		// updating data
 		timeString := string(spc_uuu)
@@ -193,7 +183,7 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 
 		if timmm.Hours() > 24 {
 
-			upStmt := "UPDATE `database_bigproject`.`project_table` SET `name` = ?, `surname` = ?, `date_birth` = ?, updated_at = ? WHERE (`name` = ?);"
+			upStmt := "UPDATE `bigproject`.`project_table` SET `name` = ?, `surname` = ?, `date_birth` = ?, updated_at = ? WHERE (`name` = ?);"
 			_, err := db.Exec(upStmt, user_decodes.Name, user_decodes.Surname, user_decodes.Date_birth, time.Now(), claims["username"])
 			if err != nil {
 				log.Println("Error executing update statement:", err)

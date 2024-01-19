@@ -10,7 +10,8 @@ import (
 var db *sql.DB
 
 func OpenDatabaseConnection() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "user:password@tcp(localhost:xxxx)/database_bigproject")
+	db, err := sql.Open("mysql", "asek1:pass12@tcp(db-project:3306)/bigproject")
+
 	if err != nil {
 		return nil, err
 	}
