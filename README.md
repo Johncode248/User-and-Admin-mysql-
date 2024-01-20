@@ -30,7 +30,7 @@ b. Logowanie:
   ```
 c. Profil uzytkownika
    ```bash
-  curl curl -X GET -H "Authorization: TOKEN" http://localhost:7943/login/user
+  curl -X GET -H "Authorization: TOKEN" http://localhost:7943/login/user
    ```
 d. Aktualizacja danych o user
    ```bash
