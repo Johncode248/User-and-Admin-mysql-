@@ -84,7 +84,7 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Incorrect password or name", http.StatusBadRequest)
 		return
 	}
-	CreateTokenHandler_user(w, r, user_decode)
+	CreateTokenHandler(w, r, &user_decode)
 }
 
 func getInfoUser(w http.ResponseWriter, r *http.Request) {

@@ -24,7 +24,7 @@ func login_Admin(w http.ResponseWriter, r *http.Request) {
 
 	if admin_decode.Name == admin.Name && admin_decode.Password == admin.Password {
 		//json.NewEncoder(w).Encode(r.Body)  Empty JSON
-		CreateTokenHandler(w, r, admin_decode)
+		CreateTokenHandler(w, r, &admin_decode)
 	} else {
 		http.Error(w, "wrong name or password", http.StatusBadRequest)
 		return
@@ -40,7 +40,6 @@ type Page struct {
 
 func deleteUser_admin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	
 
 	params := mux.Vars(r)
 	productId := params["id"]
@@ -71,7 +70,6 @@ func getUsers_admin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var users []User
-	
 
 	page := 1
 	pageSize := 10
