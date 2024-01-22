@@ -14,10 +14,11 @@ import (
 	"database/sql"
 )
 
+var err error
+
 func createAccount(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	
 	user_instance := &User{
 		Updated_at: time.Now().Add(-24 * time.Hour),
 	}
@@ -88,7 +89,6 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 
 func getInfoUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	
 
 	var user User
 	var p string
