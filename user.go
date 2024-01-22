@@ -17,15 +17,7 @@ import (
 func createAccount(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	// Get connect
-	//db := connect()
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
-
+	
 	user_instance := &User{
 		Updated_at: time.Now().Add(-24 * time.Hour),
 	}
@@ -66,12 +58,6 @@ func createAccount(w http.ResponseWriter, r *http.Request) {
 
 func loginUser(w http.ResponseWriter, r *http.Request) {
 	var user_decode User
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
 
 	decoder := json.NewDecoder(r.Body)
 
@@ -102,13 +88,7 @@ func loginUser(w http.ResponseWriter, r *http.Request) {
 
 func getInfoUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	// Get connect
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
+	
 
 	var user User
 	var p string
@@ -146,12 +126,6 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Get connection to the database
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
 
 	//var user User
 	var user_decodes User
