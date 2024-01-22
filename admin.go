@@ -40,16 +40,7 @@ type Page struct {
 
 func deleteUser_admin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	// Get connect
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
-
-	//var user User
-	fmt.Println(w, "sdad")
+	
 
 	params := mux.Vars(r)
 	productId := params["id"]
@@ -80,12 +71,7 @@ func getUsers_admin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var users []User
-	db, err := OpenDatabaseConnection()
-	if err != nil {
-		fmt.Println("Błąd podczas otwierania połączenia do bazy danych:", err)
-		return
-	}
-	defer db.Close()
+	
 
 	page := 1
 	pageSize := 10
