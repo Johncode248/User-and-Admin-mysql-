@@ -11,20 +11,9 @@ import (
 var secretKey = []byte("secretkey")
 
 // function for admin
-func CreateTokenHandler(w http.ResponseWriter, r *http.Request, credenttt Admin) {
+func CreateTokenHandler(w http.ResponseWriter, r *http.Request, credentials Credentials) {
 
-	token, err := CreateToken(credenttt.Name)
-	if err != nil {
-		http.Error(w, "Token creation error", http.StatusInternalServerError)
-		return
-	}
-
-	w.Write([]byte(token))
-}
-
-// function for users
-func CreateTokenHandler_user(w http.ResponseWriter, r *http.Request, credenttt User) {
-	token, err := CreateToken(credenttt.Name)
+	token, err := CreateToken(credentials.getName())
 	if err != nil {
 		http.Error(w, "Token creation error", http.StatusInternalServerError)
 		return
