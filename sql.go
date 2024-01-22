@@ -7,7 +7,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
+var(
+    db *sql.DB
+)
 
 func OpenDatabaseConnection() (*sql.DB, error) {
 	db, err := sql.Open("mysql", "asek1:pass12@tcp(db-project:3306)/bigproject")
@@ -33,7 +35,6 @@ func createTableIfNotExists() error {
 	if err != nil {
 		return err
 	}
-	defer db.Close()
 
 	// Utworzenie tabeli
 	_, err = db.Exec(`
