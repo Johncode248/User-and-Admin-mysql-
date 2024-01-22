@@ -12,7 +12,6 @@ import (
 
 func main() {
 
-	time.Sleep(5 * time.Second)
 	err := createTableIfNotExists()
 	if err != nil {
 		log.Fatal(err)
