@@ -9,7 +9,7 @@ services:
       - "7943:7943"
     networks:
       - net_db  
-    command: sh -c "sleep 6 && /app/main"  
+    #command: sh -c "sleep 6 && /app/main"  
     depends_on:
       - db  
     

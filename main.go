@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -13,7 +14,17 @@ func main() {
 
 	err := createTableIfNotExists()
 	if err != nil {
-		log.Fatal(err)
+
+		for i := 0; i < 5; i++ {
+			time.Sleep(time.Second * 2)
+			err = createTableIfNotExists()
+			if err == nil {
+				break
+			}
+		}
+		if err != nil {
+			log.Fatal("Failed to connect to database", err)
+		}
 	}
 
 	r := mux.NewRouter()
