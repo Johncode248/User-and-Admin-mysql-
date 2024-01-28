@@ -3,6 +3,8 @@
 ## 1. Wprowadzenie
 Aplikacja User-and-Admin-mysql-  to prosta aplikacja webowa napisana w języku Go. Celem tej mini dokumentacji jest przedstawienie podstawowych informacji dotyczących aplikacji oraz instrukcji dotyczących uruchamiania jej w środowisku lokalnym przy użyciu Docker.
 
+Repozytorium posiada branch structure-update w ktorej dodano: repository.go, manager.go, handler_user.go, handler_admin.go
+
 ## 2. Dostępność Aplikacji 
 
 Aplikacja będzie dostępna pod adresem `http://localhost:7943`.
