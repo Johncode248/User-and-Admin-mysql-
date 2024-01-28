@@ -1,9 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gorilla/mux"
 
@@ -12,32 +12,32 @@ import (
 
 func main() {
 
-	err := createTableIfNotExists()
-	if err != nil {
-
-		for i := 0; i < 5; i++ {
-			time.Sleep(time.Second * 2)
-			err = createTableIfNotExists()
-			if err == nil {
-				break
-			}
-		}
-		if err != nil {
-			log.Fatal("Failed to connect to database", err)
-		}
+	userManager := &UserManager{
+		userRepository: &DatabaseUserRepository{},
 	}
+
+	userHandler := &UserHandler{
+		userManager: userManager,
+	}
+
+	adminHandler := &AdminHandler{
+		userManager: userManager,
+	}
+	fmt.Print(adminHandler)
+
+	DatabaseConnect()
 
 	r := mux.NewRouter()
 
 	// User functions
-	r.HandleFunc("/create_account", createAccount).Methods("POST")
-	r.HandleFunc("/start/login/user", loginUser).Methods("POST")
-	r.HandleFunc("/login/user", getInfoUser).Methods("GET")
-	r.HandleFunc("/update/user", updateUser).Methods("PUT")
+	r.HandleFunc("/create_account", userHandler.createAccountHandler).Methods("POST")
+	r.HandleFunc("/start/login/user", userHandler.loginUserHandler).Methods("POST")
+	r.HandleFunc("/login/user", userHandler.getInfoUserHandler).Methods("GET")
+	r.HandleFunc("/update/user", userHandler.updateUserHandler).Methods("PUT")
 	// Admin functions
-	r.HandleFunc("/admin/login", login_Admin).Methods("POST")
-	r.HandleFunc("/admin/get_users", getUsers_admin).Methods("GET")
-	r.HandleFunc("/admin/delete/{id}", deleteUser_admin).Methods("DELETE")
+	r.HandleFunc("/admin/login", adminHandler.loginAdminHandler).Methods("POST")
+	r.HandleFunc("/admin/get_users", adminHandler.getUsersAdminHandler).Methods("GET")
+	r.HandleFunc("/admin/delete/{id}", adminHandler.deleteUserAdminHandler).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":7943", r))
 }
