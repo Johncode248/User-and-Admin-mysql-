@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -23,7 +22,6 @@ func main() {
 	adminHandler := &AdminHandler{
 		userManager: userManager,
 	}
-	fmt.Print(adminHandler)
 
 	DatabaseConnect()
 
