@@ -29,13 +29,18 @@ func (m *UserManager) CreateUser(name, surname, email, password string, date_bir
 	return user, nil
 }
 
-func (m *UserManager) loginUserManager(*User) error {
+func (m *UserManager) loginUserManager(userDecode *User) error {
 
 	var user_instance *User
+	fmt.Println("imie : ", userDecode.Name)
 
-	user_instance, err = m.userRepository.GetUser(user_instance.Name)
+	user_instance, err = m.userRepository.GetUser(userDecode.Name)
+	fmt.Println("user1: ", user_instance)
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user_instance.Password), []byte(user_instance.Password)); err != nil {
+	userDecode = user_instance
+	fmt.Println("user2: ", userDecode)
+
+	if err := bcrypt.CompareHashAndPassword([]byte(userDecode.Password), []byte(userDecode.Password)); err != nil {
 		return err
 	}
 

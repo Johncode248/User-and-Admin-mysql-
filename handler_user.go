@@ -46,6 +46,7 @@ func (h *UserHandler) loginUserHandler(w http.ResponseWriter, r *http.Request) {
 	err = h.userManager.loginUserManager(&user_decode)
 	if err != nil {
 		http.Error(w, "Incorrect password or name"+err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	CreateTokenHandler(w, r, &user_decode)

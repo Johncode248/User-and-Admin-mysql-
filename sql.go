@@ -7,8 +7,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var(
-    db *sql.DB
+var (
+	db *sql.DB
 )
 
 func OpenDatabaseConnection() (*sql.DB, error) {
@@ -18,7 +18,6 @@ func OpenDatabaseConnection() (*sql.DB, error) {
 		return nil, err
 	}
 
-	// Warto dodać test połączenia, aby upewnić się, że połączenie jest prawidłowe.
 	err = db.Ping()
 	if err != nil {
 		db.Close()

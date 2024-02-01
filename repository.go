@@ -84,7 +84,7 @@ func (r *DatabaseUserRepository) Create(name, surname, email, password string, d
 	}
 	defer ins.Close()
 
-	res, err := ins.Exec(name, surname, email, password, date_birth, updated_at)
+	res, err := ins.Exec(name, surname, date_birth, email, password, updated_at)
 
 	rowsAffec, _ := res.RowsAffected()
 	if err != nil || rowsAffec != 1 {
@@ -96,12 +96,13 @@ func (r *DatabaseUserRepository) Create(name, surname, email, password string, d
 }
 
 func (r *DatabaseUserRepository) GetUser(name string) (*User, error) {
-	var user_instance *User
+	user_instance := &User{}
 	var p string
 	var i string
 	var u []uint8
-	row := db.QueryRow("SELECT * FROM bigproject.project_table WHERE name = ?;", user_instance.Name)
+	row := db.QueryRow("SELECT * FROM bigproject.project_table WHERE name = ?;", name)
 	err = row.Scan(&i, &user_instance.Name, &user_instance.Surname, &p, &user_instance.Email, &user_instance.Password, &u)
+	fmt.Println("user_repo: ", user_instance)
 
 	return user_instance, err
 }
@@ -110,6 +111,7 @@ func (r *DatabaseUserRepository) List(page int) ([]User, error) {
 	var users []User
 	pageSize := 10
 	query := fmt.Sprintf("SELECT name, surname, date_birth, email, password, updated_at FROM bigproject.project_table LIMIT %d OFFSET %d", pageSize, (page-1)*pageSize)
+	//query := fmt.Sprintf("SELECT * FROM bigproject.project_table LIMIT %d OFFSET %d", pageSize, (page-1)*pageSize)
 
 	// Wykonaj zapytanie do bazy danych
 	rows, err := db.Query(query)
@@ -118,12 +120,15 @@ func (r *DatabaseUserRepository) List(page int) ([]User, error) {
 	}
 	defer rows.Close()
 
-	var u string
-	var u2 string
+	var u, u2 string
+	//var u2 string
+	//var i string
+	//var p string
 	var user User
 	for rows.Next() {
 		if err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
-			user.Date_birth, err = time.Parse("2006-01-02", u2)
+			// err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
+			user.Date_birth, err = time.Parse("2006-01-02 15:00:00", u2)
 			if err != nil {
 				fmt.Println("Error parsing Date_birth:", err)
 			}
