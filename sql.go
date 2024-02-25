@@ -41,10 +41,10 @@ func createTableIfNotExists() error {
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(45),
 		surname VARCHAR(45),
-		date_birth VARCHAR(100),
+		date_birth DATE,
 		email VARCHAR(100),
 		password VARCHAR(120),
-		updated_at VARCHAR(100)
+		updated_at DATETIME
 	);
 `)
 	if err != nil {
