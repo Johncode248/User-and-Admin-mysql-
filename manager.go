@@ -35,12 +35,12 @@ func (m *UserManager) loginUserManager(userDecode *User) error {
 	fmt.Println("imie : ", userDecode.Name)
 
 	user_instance, err = m.userRepository.GetUser(userDecode.Name)
-	fmt.Println("user1: ", user_instance)
+	//fmt.Println("user1: ", user_instance)
 
-	userDecode = user_instance
-	fmt.Println("user2: ", userDecode)
+	//userDecode = user_instance
+	//fmt.Println("user2: ", userDecode)
 
-	if err := bcrypt.CompareHashAndPassword([]byte(userDecode.Password), []byte(userDecode.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user_instance.Password), []byte(userDecode.Password)); err != nil {
 		return err
 	}
 
@@ -94,60 +94,6 @@ type Page struct {
 	Users    []User `json:"users"`
 }
 
-/*
-	func (m *UserManager) getUsersAdmin(page int) (int, []User) {
-		// Construct the SQL query with LIMIT and OFFSET
-		var users []User
-		pageSize := 10
-		query := fmt.Sprintf("SELECT name, surname, date_birth, email, password, updated_at FROM bigproject.project_table LIMIT %d OFFSET %d", pageSize, (page-1)*pageSize)
-
-		// Execute the query
-		rows, err := db.Query(query)
-		if err != nil {
-			log.Println(err)
-
-			return 0, nil
-		}
-		defer rows.Close()
-
-		var u string
-		var u2 string
-		var user User
-		for rows.Next() {
-
-			if err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
-
-				user.Date_birth, err = time.Parse("2006-01-02", u2)
-				if err != nil {
-					fmt.Println("Error parsing Date_birth:", err)
-				} else {
-					fmt.Println("good")
-				}
-
-				user.Updated_at, err = time.Parse("2006-01-02 15:04:05.9999999", u)
-				if err != nil {
-					fmt.Println("Error parsing Updated_at:", err)
-				} else {
-					fmt.Println("good")
-				}
-
-			} else {
-				fmt.Println(err)
-
-				return 0, nil
-			}
-			users = append(users, user)
-		}
-
-		if err := rows.Err(); err != nil {
-
-			log.Println(err)
-
-			return 0, nil
-		}
-		return page, users
-	}
-*/
 func (m *UserManager) getUsersAdmin(page int) (int, []User) {
 
 	users, err := m.userRepository.List(page)

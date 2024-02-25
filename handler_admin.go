@@ -14,9 +14,13 @@ type AdminHandler struct {
 	userManager *UserManager
 }
 
+var (
+	admin = Admin{Name: "Admin", Password: "12345"}
+)
+
 func (a *AdminHandler) loginAdminHandler(w http.ResponseWriter, r *http.Request) {
 	var admin_decode Admin
-	admin := Admin{Name: "Admin", Password: "12345"}
+
 	decoder := json.NewDecoder(r.Body)
 
 	if err := decoder.Decode(&admin_decode); err != nil {

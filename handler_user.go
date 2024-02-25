@@ -21,14 +21,20 @@ func (h *UserHandler) createAccountHandler(w http.ResponseWriter, r *http.Reques
 
 	_ = json.NewDecoder(r.Body).Decode(&user_instance)
 
+	// Verification !!!
+	if len(user_instance.Name) > 45 || len(user_instance.Surname) > 45 || len(user_instance.Password) > 40 || len(user_instance.Email) > 100 {
+		return
+	}
+
 	user, err := h.userManager.CreateUser(user_instance.Name, user_instance.Surname, user_instance.Email, user_instance.Password, user_instance.Date_birth)
 	if err != nil {
 		http.Error(w, "Failed to create user", http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	user.Password = ""
 
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 
 }
@@ -83,11 +89,15 @@ func (h *UserHandler) updateUserHandler(w http.ResponseWriter, r *http.Request) 
 
 	var user_decodes User
 
-	// Decode request body into the user_info struct
 	err = json.NewDecoder(r.Body).Decode(&user_decodes)
 	if err != nil {
 		log.Println(err)
 		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Verification !!!
+	if len(user_decodes.Name) > 45 || len(user_decodes.Surname) > 45 {
 		return
 	}
 
