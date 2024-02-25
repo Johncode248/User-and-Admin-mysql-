@@ -128,7 +128,9 @@ func (r *DatabaseUserRepository) List(page int) ([]User, error) {
 	for rows.Next() {
 		if err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
 			// err := rows.Scan(&user.Name, &user.Surname, &u2, &user.Email, &user.Password, &u); err == nil {
-			user.Date_birth, err = time.Parse("2006-01-02 15:00:00", u2)
+			//user.Date_birth, err = time.Parse("2006-01-02 15:00:00", u2)
+			user.Date_birth, err = time.Parse("2006-01-02", u2)
+
 			if err != nil {
 				fmt.Println("Error parsing Date_birth:", err)
 			}
