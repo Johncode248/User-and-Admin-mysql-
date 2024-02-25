@@ -34,9 +34,9 @@ func VerifyTokenHandler(w http.ResponseWriter, r *http.Request) (bool, jwt.MapCl
 		http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
 		return false, nil
 	}
-
-	username := claims["username"].(string)
-	w.Write([]byte("Token verification successful. User: " + username))
+	// Commented because we do not want additional text "Token verification successful. User: "
+	//username := claims["username"].(string)
+	//w.Write([]byte("Token verification successful. User: " + username))
 	if err == nil {
 
 		return true, claims
